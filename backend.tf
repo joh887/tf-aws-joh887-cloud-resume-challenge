@@ -13,7 +13,7 @@ terraform {
     }
 
     backend "s3"{
-        bucket = "arn:aws:s3:::tf-aws-joh887-cloud-resume-challenge-state-bucket"
+        bucket = "tf-aws-joh887-cloud-resume-challenge-state-bucket"
         key = "terraform.tfstate"
         region = "ap-southeast-2"
         encrypt = true

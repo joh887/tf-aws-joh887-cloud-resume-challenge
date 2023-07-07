@@ -22,7 +22,7 @@ jobs:
         
         steps:
             - name: configure aws credentials
-              uses: aws_actions/configure-aws-credentials@master
+              uses: aws-actions/configure-aws-credentials@master
               with:
                 role-to-assume: ${{ env.IAM_ROLE }}
                 aws-region: ${{ env.AWS_REGION}}

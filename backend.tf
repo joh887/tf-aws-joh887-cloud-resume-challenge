@@ -1,12 +1,5 @@
 provider "aws"{
     region = "ap-southeast-2"
-    
-    assume_role {
-        role_arn = "arn:aws:iam::966294396589:role/GitHubAction-AssumeRoleWithAction"
-        session_name = "tf-aws-joh887-cloud-resume-challenge"
-        external_id = "joh887@github"
-    }
-
 }
 
 terraform {

@@ -1,10 +1,9 @@
 #tfsec:ignore:aws-s3-enable-versioning
-#tfsec:ignore:aws-s3-encryption-customer-key
 resource "aws_s3_bucket" "cloud_resume_site_bucket" {
   bucket = "tf-aws-joh887-cloud-resume-challenge-site"
 }
 
-
+#tfsec:ignore:aws-s3-encryption-customer-key
 resource "aws_s3_bucket_server_side_encryption_configuration" "cloud_resume_site_bucket" {
   bucket = aws_s3_bucket.cloud_resume_site_bucket.id
 

@@ -1,6 +1,6 @@
 resource "aws_s3_bucket" "b" {
   bucket = "tf-aws-joh887-cloud-resume-challenge"
-  acl    = "private"
+  acl    = "public"
 }
 
 

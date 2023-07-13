@@ -80,6 +80,7 @@ resource "aws_s3_bucket_logging" "cloud_resume_logging_bucket" {
   target_prefix = "log/"
 }
 
+
 #TODO: prevent billshock in AWS
 #TODO: introduce best practice tf project structure
 #TODO: add default tags

@@ -59,3 +59,35 @@ jobs:
               run: terraform apply -auto-approve
               continue-on-error: false
 
+    destroy:
+        name: "build"
+        runs-on: ubuntu-latest
+        if: inputs.action_type == 'build'
+        
+        defaults:
+          run:
+            working-directory: "${{ inputs.environment_type }}/"
+        steps:
+            - name: configure aws credentials
+              uses: aws-actions/configure-aws-credentials@master
+              with:
+                role-to-assume: ${{ env.IAM_ROLE }}
+                aws-region: ${{ env.AWS_REGION}}
+
+            - uses: actions/checkout@v3
+            - uses: hashicorp/setup-terraform@v2
+
+            - name: Terraform Init
+              id: init
+              run: terraform init
+
+            - name: Terraform Plan
+              id: plan
+              run: terraform plan
+              continue-on-error: false
+
+            - name: Terraform Destroy
+              id: destroy
+              run: terraform apply -auto-approve
+              continue-on-error: false
+

@@ -23,6 +23,9 @@ jobs:
         runs-on: ubuntu-latest
         if: inputs.action_type == 'build'
         
+        defaults:
+          run:
+            working-directory: "${{ inputs.environment_type }}/"
         steps:
             - name: configure aws credentials
               uses: aws-actions/configure-aws-credentials@master
@@ -32,8 +35,6 @@ jobs:
 
             - uses: actions/checkout@v3
             - uses: hashicorp/setup-terraform@v2
-              with:
-                tf_actions_working_dir: "${{ inputs.environment_type }}/"
 
             - name: Terraform fmt
               id: fmt

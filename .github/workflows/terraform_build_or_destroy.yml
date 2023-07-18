@@ -6,6 +6,9 @@ on:
             action_type:
                 description: "Type of action you want to take ('build' or 'destroy')"
                 required: true
+            environment_type:
+              description: "Type of action you want to act on ('nonprod' or 'prod')"
+              required: true
                 
 env:
     AWS_REGION: ap-southeast-2
@@ -29,6 +32,8 @@ jobs:
 
             - uses: actions/checkout@v3
             - uses: hashicorp/setup-terraform@v2
+              with:
+                tf_actions_working_dir: "${{ inputs.environment_type }}/"
 
             - name: Terraform fmt
               id: fmt

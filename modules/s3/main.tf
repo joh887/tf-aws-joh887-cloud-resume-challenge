@@ -1,6 +1,6 @@
 #tfsec:ignore:aws-s3-enable-versioning
 resource "aws_s3_bucket" "cloud_resume_site_bucket" {
-  bucket = "tf-aws-joh887-cloud-resume-challenge-${var.environment}"
+  bucket = "tf-aws-joh887-cloud-resume-challenge-${var.environment}-site"
 }
 
 #tfsec:ignore:aws-s3-encryption-customer-key

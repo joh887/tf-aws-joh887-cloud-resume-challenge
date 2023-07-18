@@ -13,7 +13,7 @@ terraform {
     }
 
     backend "s3"{
-        bucket = "tf-aws-joh887-cloud-resume-challenge.state"
+        bucket = "tf-aws-joh887-cloud-resume-challenge-prod.state"
         key = "terraform.tfstate"
         region = "ap-southeast-2"
         encrypt = true

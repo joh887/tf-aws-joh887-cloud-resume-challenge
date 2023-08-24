@@ -1,5 +1,12 @@
 provider "aws"{
     region = "ap-southeast-2"
+    default_tags {
+        tags = {
+            Environment = "Prod"
+            Managed_by = "https://github.com/joh887/tf-aws-joh887-cloud-resume-challenge"
+            Project = "AWS Cloud Resume Challenge"
+        }
+    }
 }
 
 terraform {

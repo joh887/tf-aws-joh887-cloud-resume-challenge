@@ -28,15 +28,15 @@ resource "aws_s3_bucket_public_access_block" "cloud_resume_site_bucket" {
 resource "aws_s3_object" "index" {
   bucket = aws_s3_bucket.cloud_resume_site_bucket.id
   key    = "index.html"
-  source = "../../${var.environment}/src/index.html"
-  etag = filemd5("../../${var.environment}/src/index.html")
+  source = "src/index.html"
+  etag = filemd5("src/index.html")
 }
 
 resource "aws_s3_object" "error" {
   bucket = aws_s3_bucket.cloud_resume_site_bucket.id
   key    = "error.html"
-  source = "../../${var.environment}/src/error.html"
-  etag = filemd5("../../${var.environment}/src/error.html")
+  source = "src/error.html"
+  etag = filemd5("src/error.html")
 }
 
 

@@ -57,7 +57,7 @@ resource "aws_s3_bucket_website_configuration" "cloud_resume_site_bucket" {
 #tfsec:ignore:aws-s3-enable-bucket-logging
 #tfsec:ignore:aws-s3-encryption-customer-key
 resource "aws_s3_bucket" "cloud_resume_logging_bucket" {
-  bucket = "tf-aws-joh887-cloud-resume-challenge-logging-${var.environment}"
+  bucket = "tf-aws-joh887-cloud-resume-challenge-logging-${var.environment}-logging"
 }
 
 resource "aws_s3_bucket_versioning" "cloud_resume_logging_bucket" {

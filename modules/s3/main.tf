@@ -41,7 +41,6 @@ resource "aws_s3_object" "error" {
   content_type = "text/html"
 }
 
-
 resource "aws_s3_bucket_website_configuration" "cloud_resume_site_bucket" {
   bucket = aws_s3_bucket.cloud_resume_site_bucket.id
 
@@ -57,7 +56,7 @@ resource "aws_s3_bucket_website_configuration" "cloud_resume_site_bucket" {
 #tfsec:ignore:aws-s3-enable-bucket-logging
 #tfsec:ignore:aws-s3-encryption-customer-key
 resource "aws_s3_bucket" "cloud_resume_logging_bucket" {
-  bucket = "tf-aws-joh887-cloud-resume-challenge-logging-${var.environment}-logging"
+  bucket = "tf-aws-joh887-cloud-resume-challenge-logging-${var.environment}"
 }
 
 resource "aws_s3_bucket_versioning" "cloud_resume_logging_bucket" {

@@ -90,7 +90,7 @@ resource "aws_cloudfront_distribution" "cloud_resume_site_bucket" {
   restrictions {
     geo_restriction {
       restriction_type = "whitelist"
-      locations        = ["AU","US"]
+      locations        = ["AU","US","KR"]
     }
   }
       

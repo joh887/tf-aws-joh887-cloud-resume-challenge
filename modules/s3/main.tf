@@ -80,13 +80,20 @@ resource "aws_cloudfront_distribution" "cloud_resume_site_bucket" {
     # Using the CachingDisabled managed policy during active development of this page. This should be changed upon completion.
     cache_policy_id  = "4135ea2d-6df8-44a3-9df3-4b5a84be39ad"
     allowed_methods  = ["GET", "HEAD", "OPTIONS"]
-    path_pattern     = "*"
+    cached_methods = ["GET", "HEAD"]
     target_origin_id = "cloudResumeSiteOrigin"
     viewer_protocol_policy = "redirect-to-https"
   }
 
   price_class = "PriceClass_100"
 
+  restrictions {
+    geo_restriction {
+      restriction_type = "whitelist"
+      locations        = ["AU","US"]
+    }
+  }
+      
   viewer_certificate {
     cloudfront_default_certificate = true
   }

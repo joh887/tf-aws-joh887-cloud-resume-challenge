@@ -72,7 +72,7 @@ resource "aws_cloudfront_distribution" "cloud_resume_site_bucket" {
 
   logging_config {
     include_cookies = false
-    bucket          = aws_s3_bucket.cloud_resume_logging_bucket.domain_name
+    bucket          = aws_s3_bucket.cloud_resume_logging_bucket.bucket_domain_name
     prefix          = "cloud-resume-cf-logs"
   }
 

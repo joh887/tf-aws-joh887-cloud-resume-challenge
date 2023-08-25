@@ -52,6 +52,63 @@ resource "aws_s3_bucket_website_configuration" "cloud_resume_site_bucket" {
     key = "error.html"
   }
 }
+resource "aws_cloudfront_origin_access_identity" "cloud_resume_site_bucket" {
+  comment = "Used for the cloud_resume_site_bucket."
+}
+
+resource "aws_cloudfront_distribution" "cloud_resume_site_bucket" {
+  origin {
+    domain_name = aws_s3_bucket.cloud_resume_site_bucket.bucket_regional_domain_name
+    origin_id   = "cloudResumeSiteOrigin"
+
+    s3_origin_config {
+      origin_access_identity = aws_cloudfront_origin_access_identity.cloud_resume_site_bucket.cloudfront_access_identity_path
+    }
+  }
+
+  enabled = true
+  is_ipv6_enabled = true
+  default_root_object = "index.html"
+
+  logging_config {
+    include_cookies = false
+    bucket          = aws_s3_bucket.cloud_resume_logging_bucket.domain_name
+    prefix          = "cloud-resume-cf-logs"
+  }
+
+  default_cache_behavior {
+    # Using the CachingDisabled managed policy during active development of this page. This should be changed upon completion.
+    cache_policy_id  = "4135ea2d-6df8-44a3-9df3-4b5a84be39ad"
+    allowed_methods  = ["GET", "HEAD", "OPTIONS"]
+    path_pattern     = "*"
+    target_origin_id = "cloudResumeSiteOrigin"
+    viewer_protocol_policy = "redirect-to-https"
+  }
+
+  price_class = "PriceClass_100"
+
+  viewer_certificate {
+    cloudfront_default_certificate = true
+  }
+}
+
+data "aws_iam_policy_document" "cloud_resume_site_bucket" {
+  statement {
+    actions   = ["s3:GetObject"]
+    resources = ["${aws_s3_bucket.cloud_resume_site_bucket.arn}/*"]
+
+    principals {
+      type        = "AWS"
+      identifiers = [aws_cloudfront_origin_access_identity.cloud_resume_site_bucket.iam_arn]
+    }
+  }
+}
+
+resource "aws_s3_bucket_policy" "cloud_resume_site_bucket" {
+  bucket = aws_s3_bucket.cloud_resume_site_bucket.id
+  policy = data.aws_iam_policy_document.cloud_resume_site_bucket.json
+}
+
 
 #tfsec:ignore:aws-s3-enable-bucket-logging
 #tfsec:ignore:aws-s3-encryption-customer-key

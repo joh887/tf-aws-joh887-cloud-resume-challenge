@@ -1,0 +1,52 @@
+name: Plan infrastructure
+
+on: [pull_request]
+
+env: 
+    AWS_REGION: ap-southeast-2
+    IAM_ROLE: "arn:aws:iam::966294396589:role/GitHubAction-AssumeRoleWithAction"
+permissions:
+    id-token: write
+    contents: read
+
+jobs:
+    establish_env:
+      name: "establish environment"
+      runs-on: ubuntu-latest
+
+      steps:
+        - name: establish working directory
+          run: |
+            if [[ "${{ github.base_ref }}" != "main" ]]; then
+              echo "tf_actions_working_dir=nonprod" >> $GITHUB_ENV
+            fi
+            if [[ "${{ github.base_ref }}" == "main" ]]; then
+              echo "tf_actions_working_dir=prod" >> $GITHUB_ENV
+            fi
+            #
+    build:
+        name: "plan"
+        runs-on: ubuntu-latest
+
+        defaults:
+          run:
+            working-directory: ${{ env.tf_actions_working_dir }}
+
+        steps:
+            - name: configure aws credentials
+              uses: aws-actions/configure-aws-credentials@master
+              with:
+                role-to-assume: ${{ env.IAM_ROLE }}
+                aws-region: ${{ env.AWS_REGION }}
+
+            - uses: actions/checkout@v3
+            - uses: hashicorp/setup-terraform@v2
+
+            - name: Terraform Init
+              id: init
+              run: terraform init
+
+            - name: Terraform Plan
+              id: plan
+              run: terraform plan
+              continue-on-error: false

@@ -1,0 +1,22 @@
+name: Github PR source & target status check
+
+on:
+    pull_request:
+        branches:
+            - main
+            - dev
+
+jobs:
+    check-prod:
+        name: "Check PR source is nonprod and target is prod"
+        runs-on: ubuntu-latest
+        if: github.head_ref == 'dev'
+        steps:
+            - name: Check PR source and target
+              run: |
+                if [[ "${{ github.base_ref }}" == "main" ]]; then
+                    echo "Source branch is dev and target branch is main. Check passed!"
+                else
+                    echo "Check failed."
+                    exit 1
+                fi

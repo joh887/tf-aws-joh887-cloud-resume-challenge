@@ -25,6 +25,35 @@ resource "aws_s3_bucket_public_access_block" "cloud_resume_site_bucket" {
   restrict_public_buckets = true
 }
 
+locals {
+  content_types = {
+    ".html" = "text/html"
+    ".css"  = "text/css"
+    ".js"   = "application/javascript"
+    ".png"  = "image/png"
+    ".jpg"  = "image/jpeg"
+    ".eot"  = "application/vnd.ms-fontobject"
+    ".svg"  = "image/svg+xml"
+    ".ttf"  = "font/ttf"
+    ".woff" = "font/woff"
+    ".woff2"= "font/woff2"
+    ".scss"= "<mime-type>"
+    // Check if scss is needed.
+ }
+}
+
+resource "aws_s3_bucket_object" "HarryJoh-ezcv-website-recursive" {
+ bucket   = aws_s3_bucket.b.id
+ for_each = fileset("${var.website_path}", "**/*.*")
+
+ key      = each.value
+ source   = "${var.website_path}${each.value}"
+
+ // Default to binary/octet-stream if no match found in map.
+ content_type = lookup(local.content_types, pathext(each.value),"binary/octet-stream")
+ etag     = filemd5("${var.website_path}${each.value}")
+}
+
 resource "aws_s3_object" "index" {
   bucket = aws_s3_bucket.cloud_resume_site_bucket.id
   key    = "index.html"

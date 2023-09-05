@@ -3,5 +3,5 @@ variable "environment" {
   type        = string
 }
 variable "website_path" {
-  default = "ezcv/site/"
+  default = "site/"
 }

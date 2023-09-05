@@ -43,7 +43,7 @@ locals {
 }
 
 resource "aws_s3_bucket_object" "HarryJoh-ezcv-website-recursive" {
- bucket   = aws_s3_bucket.b.id
+ bucket   = aws_s3_bucket.cloud_resume_site_bucket.id
  for_each = fileset("${var.website_path}", "**/*.*")
 
  key      = each.value

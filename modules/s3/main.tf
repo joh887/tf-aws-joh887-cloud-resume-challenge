@@ -58,7 +58,7 @@ resource "aws_s3_object" "index" {
   bucket = aws_s3_bucket.cloud_resume_site_bucket.id
   key    = "index.html"
   source = "site/index.html"
-  etag = filemd5("site/index.html")
+  etag = filemd5("ezcv/site/index.html")
   content_type = "text/html"
 }
 

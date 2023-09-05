@@ -50,7 +50,7 @@ resource "aws_s3_bucket_object" "HarryJoh-ezcv-website-recursive" {
  source   = "${var.website_path}${each.value}"
 
  // Default to binary/octet-stream if no match found in map.
- content_type = lookup(local.content_types, pathext(each.value),"binary/octet-stream")
+ content_type = lookup(local.content_types, regex("\\.[^.]+$", each.value), "binary/octet-stream")
  etag     = filemd5("${var.website_path}${each.value}")
 }
 

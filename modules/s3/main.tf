@@ -37,7 +37,7 @@ locals {
     ".ttf"  = "font/ttf"
     ".woff" = "font/woff"
     ".woff2"= "font/woff2"
-    ".scss"= "<mime-type>"
+    #".scss"= "<mime-type>"
     // Check if scss is needed.
  }
 }

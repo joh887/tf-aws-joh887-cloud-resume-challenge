@@ -75,6 +75,7 @@ resource "aws_cloudfront_origin_access_identity" "cloud_resume_site_bucket" {
 }
 
 resource "aws_cloudfront_distribution" "cloud_resume_site_bucket" {
+  provider = aws.virginia
   origin {
     domain_name = aws_s3_bucket.cloud_resume_site_bucket.bucket_regional_domain_name
     origin_id   = "cloudResumeSiteOrigin"
@@ -83,11 +84,43 @@ resource "aws_cloudfront_distribution" "cloud_resume_site_bucket" {
       origin_access_identity = aws_cloudfront_origin_access_identity.cloud_resume_site_bucket.cloudfront_access_identity_path
     }
   }
+}
+
+resource "aws_route53_record" "m-cf-www" {
+  zone_id = data.aws_route53_zone.m.zone_id
+  name = "www.${var.R53DomainName}"
+
+  type = "A"
+  
+    alias {
+    name                   = aws_cloudfront_distribution.m.domain_name
+    zone_id                = aws_cloudfront_distribution.m.hosted_zone_id
+    evaluate_target_health = false
+  }
+}
+
+resource "aws_route53_record" "m-cf" {
+  zone_id = data.aws_route53_zone.m.zone_id
+  name    = "${var.R53DomainName}"
+
+  type = "A"
+
+  alias {
+    name = aws_cloudfront_distribution.m.domain_name
+    zone_id = aws_cloudfront_distribution.m.hosted_zone_id
+    evaluate_target_health = false
+}
+
 
   enabled = true
   is_ipv6_enabled = true
   default_root_object = "index.html"
 
+  aliases = [
+    "${var.R53DomainName}",
+    "www.${var.R53DomainName}",
+  ]
+  
   logging_config {
     include_cookies = false
     bucket          = aws_s3_bucket.cloud_resume_logging_bucket.bucket_domain_name
@@ -114,6 +147,7 @@ resource "aws_cloudfront_distribution" "cloud_resume_site_bucket" {
       
   viewer_certificate {
     acm_certificate_arn = aws_acm_certificate.m.arn
+    ssl_support_method = "sni-only"
   }
 }
 

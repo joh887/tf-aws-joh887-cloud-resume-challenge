@@ -120,7 +120,7 @@ resource "aws_cloudfront_distribution" "cloud_resume_site_bucket" {
   }
       
   viewer_certificate {
-    acm_certiricate_arn = aws_acm_certificate.m.arn
+    acm_certificate_arn = aws_acm_certificate.m.arn
     ssl_support_method = "sni-only"
   }
 }

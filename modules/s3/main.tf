@@ -88,11 +88,18 @@ resource "aws_cloudfront_distribution" "cloud_resume_site_bucket" {
   is_ipv6_enabled = true
   default_root_object = "index.html"
 
+  aliases = [
+    "${var.R53DomainName}",
+    "www.${var.R53DomainName}",
+  ]
+
   logging_config {
     include_cookies = false
     bucket          = aws_s3_bucket.cloud_resume_logging_bucket.bucket_domain_name
     prefix          = "cloud-resume-cf-logs"
+
   }
+
 
   default_cache_behavior {
     # Using the CachingDisabled managed policy during active development of this page. This should be changed upon completion.

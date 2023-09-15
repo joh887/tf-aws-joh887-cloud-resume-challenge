@@ -75,11 +75,9 @@ resource "aws_cloudfront_origin_access_identity" "cloud_resume_site_bucket" {
 }
 
 resource "aws_cloudfront_distribution" "cloud_resume_site_bucket" {
-  provider = aws.virginia
   origin {
     domain_name = aws_s3_bucket.cloud_resume_site_bucket.bucket_regional_domain_name
     origin_id   = "cloudResumeSiteOrigin"
-
     s3_origin_config {
       origin_access_identity = aws_cloudfront_origin_access_identity.cloud_resume_site_bucket.cloudfront_access_identity_path
     }
@@ -120,7 +118,7 @@ resource "aws_route53_record" "m-cf" {
     "${var.R53DomainName}",
     "www.${var.R53DomainName}",
   ]
-  
+
   logging_config {
     include_cookies = false
     bucket          = aws_s3_bucket.cloud_resume_logging_bucket.bucket_domain_name

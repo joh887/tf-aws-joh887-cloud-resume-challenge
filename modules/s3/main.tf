@@ -78,18 +78,22 @@ resource "aws_cloudfront_distribution" "cloud_resume_site_bucket" {
   origin {
     domain_name = aws_s3_bucket.cloud_resume_site_bucket.bucket_regional_domain_name
     origin_id   = "cloudResumeSiteOrigin"
+
     s3_origin_config {
       origin_access_identity = aws_cloudfront_origin_access_identity.cloud_resume_site_bucket.cloudfront_access_identity_path
     }
   }
+
   enabled = true
   is_ipv6_enabled = true
   default_root_object = "index.html"
 
-  aliases = [
-    "${var.R53DomainName}",
-    "www.${var.R53DomainName}",
-  ]
+  logging_config {
+    include_cookies = false
+    bucket          = aws_s3_bucket.cloud_resume_logging_bucket.bucket_domain_name
+    prefix          = "cloud-resume-cf-logs"
+  }
+
   default_cache_behavior {
     # Using the CachingDisabled managed policy during active development of this page. This should be changed upon completion.
     cache_policy_id  = "4135ea2d-6df8-44a3-9df3-4b5a84be39ad"
@@ -109,43 +113,10 @@ resource "aws_cloudfront_distribution" "cloud_resume_site_bucket" {
   }
       
   viewer_certificate {
-    acm_certificate_arn = aws_acm_certificate.m.arn
-    ssl_support_method = "sni-only"
+    cloudfront_default_certificate = true
   }
 }
 
-resource "aws_route53_record" "www" {
-  zone_id = data.aws_route53_zone.m.zone_id
-  name = "www.${var.R53DomainName}"
-
-  type = "A"
-  
-    alias {
-    name                   = aws_cloudfront_distribution.cloud_resume_site_bucket.domain_name
-    zone_id                = aws_cloudfront_distribution.cloud_resume_site_bucket.hosted_zone_id
-    evaluate_target_health = false
-  }
-}
-
-resource "aws_route53_record" "m-cf" {
-  zone_id = data.aws_route53_zone.m.zone_id
-  name    = "${var.R53DomainName}"
-
-  type = "A"
-
-  alias {
-    name = aws_cloudfront_distribution.cloud_resume_site_bucket.domain_name
-    zone_id = aws_cloudfront_distribution.cloud_resume_site_bucket.hosted_zone_id
-    evaluate_target_health = false
-}
-
-  logging_config {
-    include_cookies = false
-    bucket          = aws_s3_bucket.cloud_resume_logging_bucket.bucket_domain_name
-    prefix          = "cloud-resume-cf-logs"
-  }
-
-}
 
 data "aws_iam_policy_document" "cloud_resume_site_bucket" {
   statement {

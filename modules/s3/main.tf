@@ -42,7 +42,7 @@ locals {
  }
 }
 
-resource "aws_s3_bucket_object" "HarryJoh-ezcv-website-recursive" {
+resource "aws_s3_object" "HarryJoh-ezcv-website-recursive" {
  bucket   = aws_s3_bucket.cloud_resume_site_bucket.id
  for_each = fileset("${var.website_path}", "**/*.*")
 
@@ -88,11 +88,18 @@ resource "aws_cloudfront_distribution" "cloud_resume_site_bucket" {
   is_ipv6_enabled = true
   default_root_object = "index.html"
 
+  aliases = [
+    "${var.R53DomainName}",
+    "www.${var.R53DomainName}",
+  ]
+
   logging_config {
     include_cookies = false
     bucket          = aws_s3_bucket.cloud_resume_logging_bucket.bucket_domain_name
     prefix          = "cloud-resume-cf-logs"
+
   }
+
 
   default_cache_behavior {
     # Using the CachingDisabled managed policy during active development of this page. This should be changed upon completion.
@@ -113,9 +120,11 @@ resource "aws_cloudfront_distribution" "cloud_resume_site_bucket" {
   }
       
   viewer_certificate {
-    cloudfront_default_certificate = true
+    acm_certificate_arn = aws_acm_certificate.m.arn
+    ssl_support_method = "sni-only"
   }
 }
+
 
 data "aws_iam_policy_document" "cloud_resume_site_bucket" {
   statement {

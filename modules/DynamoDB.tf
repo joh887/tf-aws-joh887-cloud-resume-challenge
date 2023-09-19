@@ -5,7 +5,7 @@ variable "DDB_VisitorMetric" {
 resource "aws_dynamodb_table" "db" {
     name = "MJ-Metrics"
     billing_mode = "PAY_PER_REQUEST"
-    hash_key = "var.DDB_VisitorMetric"
+    hash_key = var.DDB_VisitorMetric
 
     attribute {
         name = var.DDB_VisitorMetric

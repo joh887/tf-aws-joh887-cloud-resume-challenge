@@ -54,14 +54,6 @@ resource "aws_s3_object" "HarryJoh-ezcv-website-recursive" {
  etag     = filemd5("${var.website_path}${each.value}")
 }
 
-resource "aws_s3_object" "index" {
-  bucket = aws_s3_bucket.cloud_resume_site_bucket.id
-  key    = "index.html"
-  source = "src/index.html"
-  etag = filemd5("src/index.html")
-  content_type = "text/html"
-}
-
 resource "aws_s3_object" "error" {
   bucket = aws_s3_bucket.cloud_resume_site_bucket.id
   key    = "error.html"
@@ -69,6 +61,16 @@ resource "aws_s3_object" "error" {
   etag = filemd5("src/error.html")
   content_type = "text/html"
 }
+
+
+resource "aws_s3_object" "JavaScript" {
+  bucket       = aws_s3_bucket.cloud_resume_site_bucket.id
+  key          = "Metrics.js"
+  source       = "../Source/JavaScript/Metrics.js"
+  etag         = filemd5("../Source/JavaScript/Metrics.js")
+  content_type = "text/javascript"
+}
+
 
 resource "aws_cloudfront_origin_access_identity" "cloud_resume_site_bucket" {
   comment = "Used for the cloud_resume_site_bucket."

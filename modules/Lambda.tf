@@ -43,7 +43,7 @@ variable "Function" {
 
 data "archive_file" "Archive" {
   type        = "zip"
-  source_file = "Source/Python/${var.FileName}.py"
+  source_file = "../Source/Python/${var.FileName}.py"
   output_path = var.PayloadName
 }
 

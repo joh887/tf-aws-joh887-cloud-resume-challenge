@@ -66,7 +66,7 @@ resource "aws_s3_object" "error" {
 resource "aws_s3_object" "JavaScript" {
   bucket       = aws_s3_bucket.cloud_resume_site_bucket.id
   key          = "Metrics.js"
-  source       = "Source/JavaScript/Metrics.js"
+  source       = "../Source/JavaScript/Metrics.js"
   etag         = filemd5("../Source/JavaScript/Metrics.js")
   content_type = "text/javascript"
 }

@@ -7,7 +7,7 @@ function Tick(Metric)
         document.getElementById("Metric").innerHTML = `You are visitor number: ${Metric}`;
 }
 
-fetch("https://k7qhpi7pcn4ieiat7js655fkgy0zraez.lambda-url.ap-southeast-2.on.aws/")
+fetch("https://32jb3yglih.execute-api.ap-southeast-2.amazonaws.com/test/{proxy+}")
         .then((Response) => Response.json())
         .then((RetVal) => {
                 Metric = RetVal

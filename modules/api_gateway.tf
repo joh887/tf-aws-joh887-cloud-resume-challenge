@@ -52,3 +52,13 @@ resource "aws_api_gateway_deployment" "example" {
   rest_api_id = "${aws_api_gateway_rest_api.api.id}"
   stage_name  = "test"
 }
+
+resource "aws_apigatewayv2_api" "v2api" {
+  name = "MJ-http-api"
+  protocol_type = "HTTP"
+
+  cors_configuration {
+    allow_methods = ["GET", "POST"]
+    allow_origins = ["https://${var.R53DomainName}", "https://www.${var.R53DomainName}"]
+  }
+}

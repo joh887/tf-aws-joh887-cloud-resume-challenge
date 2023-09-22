@@ -20,4 +20,12 @@ def Execute(event, context):
 
     RetVal = response["Attributes"]["Metric"]["N"]
 
-    return {"statusCode": 200, "body": RetVal}
+    return {
+        "statusCode": 200,
+        "headers": {
+            "Access-Control-Allow-Origin": "https://johminsoo.com",
+            "Access-Control-Allow-Credentials": True,
+            "Content-Type": "application/json",
+        },
+        "body": json.dumps(RetVal),
+    }

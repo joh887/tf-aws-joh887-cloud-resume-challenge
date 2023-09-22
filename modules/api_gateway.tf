@@ -57,7 +57,7 @@ resource "aws_apigatewayv2_api" "v2api" {
   name = "MJ-http-api"
   protocol_type = "HTTP"
 
-  cors {
+  cors_configuration {
     allow_methods = ["GET", "POST"]
     allow_origins = ["https://${var.R53DomainName}", "https://www.${var.R53DomainName}"]
   }

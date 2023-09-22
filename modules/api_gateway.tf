@@ -1,6 +1,6 @@
 resource "aws_api_gateway_rest_api" "api" {
   name        = "ServerlessCount"
-  description = "Terraform maid api gateway for count user lambda function"
+  description = "Terraform made api gateway for count user lambda function"
 }
 
 resource "aws_api_gateway_resource" "proxy" {

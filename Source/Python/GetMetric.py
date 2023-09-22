@@ -20,10 +20,17 @@ def Execute(event, context):
 
     RetVal = response["Attributes"]["Metric"]["N"]
 
+    origin = event.get("headers", {}).get("origin", "")
+    allowed_origins = ["https://johminsoo.com", "https://www.johminsoo.com"]
+
+    if origin in allowed_origins:
+        cors_origin = origin
+    else:
+        cors_origin = ""
     return {
         "statusCode": 200,
         "headers": {
-            "Access-Control-Allow-Origin": "https://johminsoo.com",
+            "Access-Control-Allow-Origin": cors_origin,
             "Access-Control-Allow-Credentials": True,
             "Content-Type": "application/json",
         },
